@@ -1,16 +1,3 @@
-﻿# IntelliJ IDEA
-.idea/
-*.iml
-out/
-
-# Gradle / Maven (optional, depending on your setup)
-.gradle/
-target/
-# IntelliJ IDEA
-.idea/
-*.iml
-out/
-
-# Gradle / Maven (optional, depending on your setup)
-.gradle/
-target/
+﻿**/.idea/
+**/*.iml
+**/out/
