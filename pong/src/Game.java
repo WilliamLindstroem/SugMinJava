@@ -12,7 +12,7 @@ public class Game extends JPanel implements KeyListener {
     int playerHeight = 70;
     int ballX = 500;
     int ballY = 400;
-    int ballSpeedX = 5;
+    int ballSpeedX = 3;
 
     // Initialize the game
     public Game() {
@@ -25,6 +25,7 @@ public class Game extends JPanel implements KeyListener {
 
         Timer timer = new Timer(16, e -> {
             ballX -= ballSpeedX;
+            collisionHandler();
             repaint();
         });
 
@@ -43,6 +44,17 @@ public class Game extends JPanel implements KeyListener {
 
         g.setColor(Color.white);
         g.fillOval(ballX, ballY, 20, 20);
+
+        Toolkit.getDefaultToolkit().sync();
+    }
+
+    public void collisionHandler() {
+        Rectangle playerRect = new Rectangle(x, y, playerWidth, playerHeight);
+        Rectangle ballRect = new Rectangle(ballX, ballY, 20, 20);
+
+        if (playerRect.intersects(ballRect)) {
+            ballSpeedX = -ballSpeedX;
+        }
     }
 
     // Changes the "players" location based on button presses
