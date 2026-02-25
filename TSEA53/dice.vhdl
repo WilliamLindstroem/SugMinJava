@@ -15,30 +15,65 @@ entity dice is
 end entity;
 
 architecture arch of dice is
-    signal cur_val   : unsigned(2 downto 0) := to_unsigned(1, 3); -- aktuellt värde som konstant ändras
-    signal saved_val  : unsigned(2 downto 0) := to_unsigned(1, 3);-- värdet man får vid knapptryck
-    signal roll_d       : std_logic := '0'; -- synkronisering
+    signal saved_val : unsigned(2 downto 0) := to_unsigned(1, 3);
+    signal roll_d    : std_logic := '0';
+    signal r         : unsigned(2 downto 0) := (others => '0');
+
+    type ROM_7seg is array (0 to 7) of std_logic_vector(6 downto 0);
+    constant mem : ROM_7seg := (
+        "1000000", 
+        "1111001",
+        "0100100", 
+        "0110000", 
+        "0011001", 
+        "0010010", 
+        "0000010",
+        "1111111"  
+    );
 
 begin
 
     process(clk, clr) 
     begin
         if clr = '1' then
-            cur_val <= to_unsigned(1, 3);
             saved_val <= to_unsigned(1, 3);
-            roll_d <= '0';
+            roll_d    <= '0';
+            r         <= (others => '0');
+
         elsif rising_edge(clk) then
             roll_d <= roll;
-        end if;
-        if roll = '1' then
-            if cur_val = to_unsigned(6, 3) then
-                cur_val <= to_unsigned(1, 3);
-            else
-                cur_val <= 1;
+
+            if roll = '1' then
+                r <= r + 1; 
+            end if;
+
+            if (roll = '0' and roll_d = '1') then
+                if fake = '1' then
+                    case r is
+                        when "000"  => saved_val <= "001";
+                        when "001"  => saved_val <= "010";
+                        when "010"  => saved_val <= "011";
+                        when "011"  => saved_val <= "100";
+                        when "100"  => saved_val <= "101";
+                        when others => saved_val <= "110";
+                    end case;
+                else
+                    case r is
+                        when "000"  => saved_val <= "001";
+                        when "001"  => saved_val <= "010";
+                        when "010"  => saved_val <= "011";
+                        when "011"  => saved_val <= "100";
+                        when "100"  => saved_val <= "101";
+                        when "101"  => saved_val <= "110";
+                        when others => saved_val <= "001";
+                    end case;
+                end if;
             end if;
         end if;
-
-        if roll = '1' and roll_d = '0' then
-            saved_val <= cur_val;
-        end if;
     end process;
+
+    seg <= mem(to_integer(saved_val));  
+    dp  <= '1';
+    an  <= "1110";
+
+end architecture;
