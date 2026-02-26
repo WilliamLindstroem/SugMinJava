@@ -47,8 +47,8 @@ begin
             if fake = '1' then
                 r <= r + 1;
             else
-                if r = "101" then
-                    r <= "000";
+                if r = "110" then
+                    r <= "001";
                 else
                     r <= r + 1;
                 end if;
@@ -66,14 +66,7 @@ begin
                         when others => saved_val <= "110";
                     end case;
                 else
-                    case r is
-                        when "000"  => saved_val <= "001";
-                        when "001"  => saved_val <= "010";
-                        when "010"  => saved_val <= "011";
-                        when "011"  => saved_val <= "100";
-                        when "100"  => saved_val <= "101";
-                        when "101"  => saved_val <= "110";
-                    end case;
+                    saved_val <= r;
                 end if;
             end if;
         end if;
