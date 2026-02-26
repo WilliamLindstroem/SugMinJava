@@ -5,7 +5,7 @@ use ieee.numeric_std.all;
 entity dice is 
     port(
         clk     : in std_logic;
-        clr     : in std_logic;
+        reset     : in std_logic;
         roll    : in std_logic;
         fake    : in std_logic;
         seg     : out std_logic_vector(6 downto 0);
@@ -33,9 +33,9 @@ architecture arch of dice is
 
 begin
 
-    process(clk, clr) 
+    process(clk, reset) 
     begin
-        if clr = '1' then
+        if reset = '1' then
             saved_val <= to_unsigned(1, 3);
             roll_d    <= '0';
             r         <= (others => '0');
