@@ -73,7 +73,6 @@ begin
                         when "011"  => saved_val <= "100";
                         when "100"  => saved_val <= "101";
                         when "101"  => saved_val <= "110";
-                        when others => saved_val <= "001";
                     end case;
                 end if;
             end if;
