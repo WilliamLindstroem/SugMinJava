@@ -43,9 +43,17 @@ begin
         elsif rising_edge(clk) then
             roll_d <= roll;
 
-            if roll = '1' then
-                r <= r + 1; 
+        if roll = '1' then
+            if fake = '1' then
+                r <= r + 1;
+            else
+                if r = "101" then
+                    r <= "000";
+                else
+                    r <= r + 1;
+                end if;
             end if;
+        end if;
 
             if (roll = '0' and roll_d = '1') then
                 if fake = '1' then
